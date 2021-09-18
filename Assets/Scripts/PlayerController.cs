@@ -20,7 +20,6 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
-        _animator = GetComponent<Animator>();
     }
 
     // Start is called before the first frame update
@@ -41,6 +40,5 @@ public class PlayerController : MonoBehaviour
 
 
         normalizedSpeed = _direction.magnitude;
-        _animator.SetFloat(_speedID, normalizedSpeed);
     }
 }
