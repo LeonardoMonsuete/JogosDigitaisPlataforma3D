@@ -6,8 +6,6 @@ using UnityEngine.AI;
 public class Test_script : MonoBehaviour
 {
     
-
-
     NavMeshAgent agent;
    public Animator ani;
    public GameObject aim_point;
