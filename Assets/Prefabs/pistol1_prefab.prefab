@@ -463,9 +463,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0592b442a11472844b5359d4ca46b756, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponRange: 100
   speed: 5
   maxSpeed: 10
   normalizedSpeed: 0
+  IsShooting: 0
+  IsRunning: 0
+  IsReloading: 0
 --- !u!114 &939072703653766274
 MonoBehaviour:
   m_ObjectHideFlags: 0
