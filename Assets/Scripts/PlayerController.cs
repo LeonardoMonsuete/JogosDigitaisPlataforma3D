@@ -5,47 +5,53 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private static readonly int _speedID = Animator.StringToHash("Speed");
     private CharacterController _characterController = null;
     private Animator _animator = null;
+
+    //arma
     public float weaponRange = 100.0f;
-    
     public Text munition;
     private int _munition = 10;
+    public float shootTime = 0.9f;
+    public float reloadTime = 1.5f;
 
+    //movimentacao
     private Vector2 _direction = Vector2.zero;
-    private int shootingParam = Animator.StringToHash("isShooting");
-    private int runningParam = Animator.StringToHash("isRunning");
-    private int reloadingParam = Animator.StringToHash("isReloading");
     public float speed = 3.0f;
-
     public float maxSpeed = 10.0f;
-
-    public float maxTeste;
-
     [Range(0.0f, 1.0f)]
     public float normalizedSpeed = 0.0f;
+    public float maxTeste;
+
+    //status acoes
     public bool IsShooting = false;
     public bool IsRunning = false;
     public bool IsReloading = false;
     public bool IsTesting = false;
+
+    //parametros de animacao
+    private int shootingParam = Animator.StringToHash("isShooting");
+    private int runningParam = Animator.StringToHash("isRunning");
+    private int reloadingParam = Animator.StringToHash("isReloading");
 
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
     }
 
-    // Start is called before the first frame update
     void Start()
     {
+
         _animator = GetComponent<Animator>();
+
+        // GUI Municao
         munition = GameObject.Find("Municao/Text").GetComponent<Text>();
         munition.text = _munition.ToString();
     }
 
-    // Update is called once per frame
     void Update()
     {
+        //Movimento do Jogador
         _direction = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         _direction.Normalize();
 
@@ -63,49 +69,57 @@ public class PlayerController : MonoBehaviour
             _characterController.Move(moviment);
             normalizedSpeed = _direction.magnitude;
         }
-        
-      
-        Shoot();
+
+
+        //Rotinas de acao do Jogador
+
+        //Somente pode atirar se nao tiver recarregando e não atirou nos ultimos "shootTime" segundos
+        Debug.Log(IsShooting);
+        if (Input.GetButtonDown("Fire1") && IsReloading == false && IsShooting == false)
+        {
+            StartCoroutine(Shoot());
+        }
+
+        //Ação Correr
         Run();
 
-        if(Input.GetKey(KeyCode.R))
+        //Somente pode recarregar se não tiver recarregando e não estiver atirando
+        if (Input.GetKey(KeyCode.R) && IsShooting == false && IsReloading == false)
         {
-            Reload();
+            StartCoroutine(Reload());
         }
+
     }
 
-    private void Shoot()
+    IEnumerator Shoot()
     {
-        if (Input.GetButtonDown("Fire1"))
-        {
+        
             if(_munition <= 0) {
-                 Reload();
+                 StartCoroutine(Reload()); //se tentar atirar sem munição recarrega
             } else {
                 IsShooting = true;
-                _munition = _munition - 1;
+            _animator.SetBool(shootingParam, IsShooting);
+            _munition = _munition - 1;
                 Debug.Log(_munition);
                 munition.text = _munition.ToString();
                 RaycastHit hit;
                 Physics.Raycast(transform.position,
                                 transform.forward,
                                 out hit, weaponRange);
-
-            }
-        }
-        else 
-        {
+                yield return new WaitForSecondsRealtime(shootTime); //delay de "shootTime" segundos entre tiros
             IsShooting = false;
+            _animator.SetBool(shootingParam, IsShooting);
         }
-
         
 
-        _animator.SetBool(shootingParam, IsShooting);
+        
 
 
     }
 
     private void Run()
     {
+        //enquanto estiver com left shift pressionado ele tem o status de "isRunning"
         if (Input.GetKey(KeyCode.LeftShift))
         {
             IsRunning = true;
@@ -119,14 +133,17 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private void Reload() 
+    IEnumerator Reload() 
     {
 
             IsReloading = true;
-            _munition = 10;
+            _animator.SetBool(reloadingParam, IsReloading);
+            yield return new WaitForSecondsRealtime(reloadTime); //demora "reloadTime" segundos para recarregar
+        _munition = 10;
             munition.text = _munition.ToString();
             IsReloading = false;
+            _animator.SetBool(reloadingParam, IsReloading);
 
-        _animator.SetBool(reloadingParam, IsReloading);
+
     }
 }
