@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.45099014, g: 0.5008512, b: 0.5743394, a: 1}
+  m_IndirectSpecularColor: {r: 0.45099008, g: 0.50085104, b: 0.57433933, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -319,7 +319,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 939072703653766274, guid: 1a893ee5b4944834195d29ae916df961, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 939072703653766274, guid: 1a893ee5b4944834195d29ae916df961, type: 3}
       propertyPath: mouseSensitivity
@@ -332,6 +332,10 @@ PrefabInstance:
     - target: {fileID: 939072703653766277, guid: 1a893ee5b4944834195d29ae916df961, type: 3}
       propertyPath: speed
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9081344937258285480, guid: 1a893ee5b4944834195d29ae916df961, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 939072703653766277, guid: 1a893ee5b4944834195d29ae916df961, type: 3}
@@ -367,7 +371,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 324711692}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fbc4d0b207b09b6dd8c3b11564eb7156, type: 3}
   m_Name: 
@@ -380,21 +384,39 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 324711692}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0592b442a11472844b5359d4ca46b756, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   weaponRange: 100
-  munition: {fileID: 158140490}
+  munition: {fileID: 0}
+  shootTime: 0.9
+  reloadTime: 1.5
   speed: 3
   maxSpeed: 10
-  maxTeste: 0
   normalizedSpeed: 0
+  maxTeste: 0
   IsShooting: 0
   IsRunning: 0
   IsReloading: 0
   IsTesting: 0
+--- !u!114 &324711699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 324711692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4793a602783709e4e988ad34479c34d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseX: 0
+  mouseY: 0
+  sensibility: 1.5
+  travarMouse: 1
 --- !u!1001 &1255283877
 PrefabInstance:
   m_ObjectHideFlags: 0

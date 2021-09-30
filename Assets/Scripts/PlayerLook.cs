@@ -2,63 +2,49 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerLook : MonoBehaviour
-{
-    public float mouseSensitivity = 100f;
-    public float mouseSensitivity3 = 100f;
+public class PlayerLook : MonoBehaviour {
+    [SerializeField] private float _speed = 3.0f;
+    [SerializeField] public float _mouseSensetivity = 50f;
+    [SerializeField] private float _minCameraView = -70f, _maxCameraView = 80f;
 
-    public Transform playerBody;
+    private CharacterController _characterController;
+    private Camera _camera;
+    private float xRotation = 0.0f;
 
-    float xRotation = 0f;
-    float _verticalAngle, _horizontalAngle;
 
+    // Start is called before the first frame update
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        _verticalAngle = 0.0f;
-        _horizontalAngle = transform.localEulerAngles.y;
+        _characterController = GetComponent<CharacterController>();
+        _camera = Camera.main;
+
+        if(_characterController == null)
+            Debug.Log("No char controller attached on player");
     }
 
     // Update is called once per frame
     void Update()
     {
+        Movement();
 
+        float mouseX = Input.GetAxis("Mouse X") * _mouseSensetivity * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * _mouseSensetivity * Time.deltaTime;
 
-        // Rotacao do jogador
-        float turnPlayer = Input.GetAxis("Mouse X") * mouseSensitivity;
-        _horizontalAngle = _horizontalAngle + turnPlayer;
+        xRotation -= mouseY;
 
-        if (_horizontalAngle > 360) _horizontalAngle -= 360.0f;
-        if (_horizontalAngle < 0) _horizontalAngle += 360.0f;
-
-        Vector3 currentAngles = transform.localEulerAngles;
-        currentAngles.y = _horizontalAngle;
-        transform.localEulerAngles = currentAngles;
-
-
-
-        // olhar para cima e para baixo
-        var turnCam = -Input.GetAxis("Mouse Y");
-        turnCam = turnCam * mouseSensitivity;
-        _verticalAngle = Mathf.Clamp(turnCam + _verticalAngle, -89.0f, 89.0f);
-        currentAngles = transform.localEulerAngles;
-        currentAngles.x = _verticalAngle;
-        transform.localEulerAngles = currentAngles;
-
-
-
-
-        // //float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        // float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
-        
-        // xRotation -= mouseY;
-        
-        // xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-        // transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        // //transform.Rotate(Vector3.up * mouseX);
-
-
-
-
+        xRotation = Mathf.Clamp(xRotation, _minCameraView, _maxCameraView);
+        // Debug.Log("mouse x" + mouseX);
+        _camera.transform.localRotation = Quaternion.Euler(xRotation,0,0);
+        transform.Rotate(Vector3.up * mouseX * 3);
     }
+
+    void Movement()
+    {
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+        Vector3 movement = Vector3.forward * vertical + transform.right * horizontal;
+        _characterController.Move(movement * Time.deltaTime * _speed);
+    }
+
 }
+

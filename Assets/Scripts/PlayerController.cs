@@ -16,12 +16,13 @@ public class PlayerController : MonoBehaviour
     public float reloadTime = 1.5f;
 
     //movimentacao
-    private Vector2 _direction = Vector2.zero;
-    public float speed = 3.0f;
+    private Vector3 _direction = Vector3.zero;
+    public float speed = 0.0f;
     public float maxSpeed = 10.0f;
     [Range(0.0f, 1.0f)]
     public float normalizedSpeed = 0.0f;
     public float maxTeste;
+
 
     //status acoes
     public bool IsShooting = false;
@@ -52,38 +53,38 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         //Movimento do Jogador
-        _direction = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        _direction.Normalize();
+        //PlayerLook();
+        Movement();
 
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            Vector3 moviment = new Vector3(_direction.x, 0.0f, _direction.y) * (speed + 5) * Time.deltaTime;
-            moviment = transform.TransformDirection(moviment);
-            _characterController.Move(moviment);
-            normalizedSpeed = _direction.magnitude;
-        }
-        else 
-        {
-            Vector3 moviment = new Vector3(_direction.x, 0.0f, _direction.y) * speed * Time.deltaTime;
-            moviment = transform.TransformDirection(moviment);
-            _characterController.Move(moviment);
-            normalizedSpeed = _direction.magnitude;
-        }
+        // if (Input.GetKey(KeyCode.LeftShift))
+        // {
+        //     Vector3 moviment = new Vector3(_direction.x, 0.0f, _direction.y) * (speed + 5) * Time.deltaTime;
+        //     moviment = transform.TransformDirection(moviment);
+        //     _characterController.Move(moviment);
+        //     normalizedSpeed = _direction.magnitude;
+        // }
+        // else 
+        // {
+        //     Vector3 moviment = new Vector3(_direction.x, 0.0f, _direction.y) * speed * Time.deltaTime;
+        //     moviment = transform.TransformDirection(moviment);
+        //     _characterController.Move(moviment);
+        //     normalizedSpeed = _direction.magnitude;
+        // }
 
 
         //Rotinas de acao do Jogador
 
-        //Somente pode atirar se nao tiver recarregando e não atirou nos ultimos "shootTime" segundos
+        //Somente pode atirar se nao tiver recarregando e nï¿½o atirou nos ultimos "shootTime" segundos
         Debug.Log(IsShooting);
         if (Input.GetButtonDown("Fire1") && IsReloading == false && IsShooting == false)
         {
             StartCoroutine(Shoot());
         }
 
-        //Ação Correr
+        //Aï¿½ï¿½o Correr
         Run();
 
-        //Somente pode recarregar se não tiver recarregando e não estiver atirando
+        //Somente pode recarregar se nï¿½o tiver recarregando e nï¿½o estiver atirando
         if (Input.GetKey(KeyCode.R) && IsShooting == false && IsReloading == false)
         {
             StartCoroutine(Reload());
@@ -94,13 +95,13 @@ public class PlayerController : MonoBehaviour
     IEnumerator Shoot()
     {
         
-            if(_munition <= 0) {
-                 StartCoroutine(Reload()); //se tentar atirar sem munição recarrega
+            if(_munition <= 0 && _munition != 10) {
+                 StartCoroutine(Reload()); //se tentar atirar sem muniï¿½ï¿½o recarrega
             } else {
                 IsShooting = true;
             _animator.SetBool(shootingParam, IsShooting);
             _munition = _munition - 1;
-                Debug.Log(_munition);
+                // Debug.Log(_munition);
                 munition.text = _munition.ToString();
                 RaycastHit hit;
                 Physics.Raycast(transform.position,
@@ -123,10 +124,12 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift))
         {
             IsRunning = true;
+            
         }
         else
         {
             IsRunning = false;
+
         }
 
         _animator.SetBool(runningParam, IsRunning);
@@ -139,11 +142,30 @@ public class PlayerController : MonoBehaviour
             IsReloading = true;
             _animator.SetBool(reloadingParam, IsReloading);
             yield return new WaitForSecondsRealtime(reloadTime); //demora "reloadTime" segundos para recarregar
-        _munition = 10;
+            _munition = 10;
             munition.text = _munition.ToString();
             IsReloading = false;
             _animator.SetBool(reloadingParam, IsReloading);
 
 
     }
+
+    void Movement()
+    {
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+        if(IsRunning)
+        {
+            Vector3 movement = Vector3.forward * vertical + transform.right * horizontal;
+            _characterController.Move(movement * Time.deltaTime * (speed + 3));
+        }else
+        {
+             Vector3 movement = Vector3.forward * vertical + transform.right * horizontal;
+            _characterController.Move(movement * Time.deltaTime * speed);
+        }
+
+        
+    }
+
+
 }
