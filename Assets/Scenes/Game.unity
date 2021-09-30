@@ -291,23 +291,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 451363862440853054, guid: 1a893ee5b4944834195d29ae916df961, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.9993039
       objectReference: {fileID: 0}
     - target: {fileID: 451363862440853054, guid: 1a893ee5b4944834195d29ae916df961, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.03730706
       objectReference: {fileID: 0}
     - target: {fileID: 451363862440853054, guid: 1a893ee5b4944834195d29ae916df961, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 451363862440853054, guid: 1a893ee5b4944834195d29ae916df961, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 451363862440853054, guid: 1a893ee5b4944834195d29ae916df961, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: 4.276
       objectReference: {fileID: 0}
     - target: {fileID: 451363862440853054, guid: 1a893ee5b4944834195d29ae916df961, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -384,7 +384,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 324711692}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0592b442a11472844b5359d4ca46b756, type: 3}
   m_Name: 
@@ -413,10 +413,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4793a602783709e4e988ad34479c34d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseX: 0
-  mouseY: 0
-  sensibility: 1.5
-  travarMouse: 1
+  _speed: 3
+  _mouseSensetivity: 50
+  _minCameraView: -70
+  _maxCameraView: 80
 --- !u!1001 &1255283877
 PrefabInstance:
   m_ObjectHideFlags: 0
