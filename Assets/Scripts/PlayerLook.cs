@@ -15,17 +15,16 @@ public class PlayerLook : MonoBehaviour {
     // Start is called before the first frame update
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         _characterController = GetComponent<CharacterController>();
         _camera = Camera.main;
-
-        if(_characterController == null)
-            Debug.Log("No char controller attached on player");
     }
 
     // Update is called once per frame
     void Update()
     {
-        Movement();
+        //Movement();
 
         float mouseX = Input.GetAxis("Mouse X") * _mouseSensetivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * _mouseSensetivity * Time.deltaTime;
@@ -42,7 +41,7 @@ public class PlayerLook : MonoBehaviour {
     {
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
-        Vector3 movement = Vector3.forward * vertical + transform.right * horizontal;
+        Vector3 movement = transform.forward * vertical + transform.right * horizontal;
         _characterController.Move(movement * Time.deltaTime * _speed);
     }
 

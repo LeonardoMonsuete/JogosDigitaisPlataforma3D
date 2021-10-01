@@ -7,13 +7,17 @@ public class PlayerController : MonoBehaviour
 {
     private CharacterController _characterController = null;
     private Animator _animator = null;
+    public Camera fpsCam; 
 
     //arma
+    public float damage = 10f;
     public float weaponRange = 100.0f;
-    public Text munition;
+    public TMPro.TextMeshProUGUI munition;
     private int _munition = 10;
     public float shootTime = 0.9f;
     public float reloadTime = 1.5f;
+    public ParticleSystem tiro;
+    public AudioSource somTiro;
 
     //movimentacao
     private Vector3 _direction = Vector3.zero;
@@ -46,36 +50,15 @@ public class PlayerController : MonoBehaviour
         _animator = GetComponent<Animator>();
 
         // GUI Municao
-        munition = GameObject.Find("Municao/Text").GetComponent<Text>();
         munition.text = _munition.ToString();
     }
 
     void Update()
     {
-        //Movimento do Jogador
-        //PlayerLook();
+        //Rotinas de acao do Jogador
         Movement();
 
-        // if (Input.GetKey(KeyCode.LeftShift))
-        // {
-        //     Vector3 moviment = new Vector3(_direction.x, 0.0f, _direction.y) * (speed + 5) * Time.deltaTime;
-        //     moviment = transform.TransformDirection(moviment);
-        //     _characterController.Move(moviment);
-        //     normalizedSpeed = _direction.magnitude;
-        // }
-        // else 
-        // {
-        //     Vector3 moviment = new Vector3(_direction.x, 0.0f, _direction.y) * speed * Time.deltaTime;
-        //     moviment = transform.TransformDirection(moviment);
-        //     _characterController.Move(moviment);
-        //     normalizedSpeed = _direction.magnitude;
-        // }
-
-
-        //Rotinas de acao do Jogador
-
         //Somente pode atirar se nao tiver recarregando e n�o atirou nos ultimos "shootTime" segundos
-        Debug.Log(IsShooting);
         if (Input.GetButtonDown("Fire1") && IsReloading == false && IsShooting == false)
         {
             StartCoroutine(Shoot());
@@ -99,14 +82,22 @@ public class PlayerController : MonoBehaviour
                  StartCoroutine(Reload()); //se tentar atirar sem muni��o recarrega
             } else {
                 IsShooting = true;
+            tiro.Play();
+            somTiro.Play();
             _animator.SetBool(shootingParam, IsShooting);
             _munition = _munition - 1;
-                // Debug.Log(_munition);
+                
                 munition.text = _munition.ToString();
                 RaycastHit hit;
-                Physics.Raycast(transform.position,
-                                transform.forward,
-                                out hit, weaponRange);
+                if(Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, weaponRange))
+                {
+                  Debug.Log(hit.transform.name);
+                  Target target = hit.transform.GetComponent<Target>();
+                  if(target != null)
+                    {
+                        target.TakeDamage(damage);
+                    }
+                }
                 yield return new WaitForSecondsRealtime(shootTime); //delay de "shootTime" segundos entre tiros
             IsShooting = false;
             _animator.SetBool(shootingParam, IsShooting);
@@ -156,11 +147,12 @@ public class PlayerController : MonoBehaviour
         float vertical = Input.GetAxis("Vertical");
         if(IsRunning)
         {
-            Vector3 movement = Vector3.forward * vertical + transform.right * horizontal;
+            Vector3 movement = transform.forward * vertical + transform.right * horizontal;
             _characterController.Move(movement * Time.deltaTime * (speed + 3));
-        }else
+        }
+        else
         {
-             Vector3 movement = Vector3.forward * vertical + transform.right * horizontal;
+            Vector3 movement = transform.forward * vertical + transform.right * horizontal;
             _characterController.Move(movement * Time.deltaTime * speed);
         }
 
