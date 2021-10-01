@@ -58,8 +58,8 @@ public class PlayerController : MonoBehaviour
         //Rotinas de acao do Jogador
         Movement();
 
-        //Somente pode atirar se nao tiver recarregando e n�o atirou nos ultimos "shootTime" segundos
-        if (Input.GetButtonDown("Fire1") && IsReloading == false && IsShooting == false)
+        //Somente pode atirar se nao tiver recarregando e n�o atirou nos ultimos "shootTime" e não está correndo segundos
+        if (Input.GetButtonDown("Fire1") && IsReloading == false && IsShooting == false && IsRunning == false)
         {
             StartCoroutine(Shoot());
         }
@@ -67,8 +67,8 @@ public class PlayerController : MonoBehaviour
         //A��o Correr
         Run();
 
-        //Somente pode recarregar se n�o tiver recarregando e n�o estiver atirando
-        if (Input.GetKey(KeyCode.R) && IsShooting == false && IsReloading == false)
+        //Somente pode recarregar se n�o tiver recarregando e n�o estiver atirando e não está correndo
+        if (Input.GetKey(KeyCode.R) && IsShooting == false && IsReloading == false && IsRunning == false)
         {
             StartCoroutine(Reload());
         }
