@@ -3,7 +3,28 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - eq
+  - wood
+  - stone
+  - Target
+  - fireball
+  - blood
+  - stealingpoint
+  - sittingpoint
+  - body
+  - glass
+  - metall_door
+  - wood_door
+  - dirt
+  - metall
+  - wood_door_glass
+  - pickuppoint
+  - Metal
+  - ExplosiveBarrel
+  - waypoint
+  - petrol
+  - Enemy
   layers:
   - Default
   - TransparentFX

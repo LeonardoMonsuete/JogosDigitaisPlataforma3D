@@ -20,6 +20,10 @@ public class PlayerController : MonoBehaviour
     public ParticleSystem tiro;
     public AudioSource somTiro;
 
+    //vida
+    private float health;
+    public TMPro.TextMeshProUGUI healthTxt;
+
     //movimentacao
     private Vector3 _direction = Vector3.zero;
     public float speed = 0.0f;
@@ -158,6 +162,16 @@ public class PlayerController : MonoBehaviour
         }
 
         
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log(other.name);
+        if (other.tag == "Enemy")
+        {
+            health = health - 20;
+            healthTxt.text = health.ToString();
+        }
     }
 
 
