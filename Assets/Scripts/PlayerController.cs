@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -92,7 +93,7 @@ public class PlayerController : MonoBehaviour
                 if(Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, weaponRange))
                 {
                   Debug.Log(hit.transform.name);
-                  Target target = hit.transform.GetComponent<Target>();
+                  TargetController target = hit.transform.GetComponent<TargetController>();
                   if(target != null)
                     {
                         target.TakeDamage(damage);
@@ -148,12 +149,12 @@ public class PlayerController : MonoBehaviour
         if(IsRunning)
         {
             Vector3 movement = transform.forward * vertical + transform.right * horizontal;
-            _characterController.Move(movement * Time.deltaTime * (speed + 3));
+            GetComponent<NavMeshAgent>().Move(movement * Time.deltaTime * (speed + 3));
         }
         else
         {
             Vector3 movement = transform.forward * vertical + transform.right * horizontal;
-            _characterController.Move(movement * Time.deltaTime * speed);
+            GetComponent<NavMeshAgent>().Move(movement * Time.deltaTime * speed);
         }
 
         
