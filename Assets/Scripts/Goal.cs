@@ -10,7 +10,7 @@ public class Goal : MonoBehaviour
         Debug.Log(gameObject.name);
         if(gameObject.name == "Player")
         {
-            SceneManager.LoadScene("Ending");
+            SceneManager.LoadScene("Game2");
         }
     }
 }
