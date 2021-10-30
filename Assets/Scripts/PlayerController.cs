@@ -24,6 +24,10 @@ public class PlayerController : MonoBehaviour
     private float health;
     public TMPro.TextMeshProUGUI healthTxt;
 
+    //mapa
+    public Image mapImg;
+    private bool mapDelay = false;
+
     //movimentacao
     private Vector3 _direction = Vector3.zero;
     public float speed = 0.0f;
@@ -78,6 +82,11 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(Reload());
         }
 
+        //Abre e fecha o mapa
+        if (Input.GetKey(KeyCode.M) && mapDelay == false)
+        {
+            StartCoroutine(ToggleMap());
+        }
     }
 
     IEnumerator Shoot()
@@ -162,6 +171,14 @@ public class PlayerController : MonoBehaviour
         }
 
         
+    }
+
+    IEnumerator ToggleMap()
+    {
+        mapDelay = true;
+        mapImg.enabled = !mapImg.enabled;
+        yield return new WaitForSecondsRealtime(0.2f);
+        mapDelay = false;
     }
 
     private void OnTriggerEnter(Collider other)
