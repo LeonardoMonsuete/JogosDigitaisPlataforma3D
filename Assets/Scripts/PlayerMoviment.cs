@@ -10,7 +10,7 @@ public class PlayerMoviment : MonoBehaviour
     public Transform body;
     [Space]
     [Header("Control Settings")]
-    public float mouseSensitivity = 2.4f;
+    public float mouseSensitivity = 5.4f;
     public float playerSpeed = 5.0f;
     [Space]
 
@@ -48,7 +48,7 @@ public class PlayerMoviment : MonoBehaviour
         Vector3 move = Vector3.zero;
 
         // Calculo do movimento do personagem
-        move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+        move = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxisRaw("Vertical"), 0);
         if (move.sqrMagnitude > 1.0f)
             move.Normalize();
 
