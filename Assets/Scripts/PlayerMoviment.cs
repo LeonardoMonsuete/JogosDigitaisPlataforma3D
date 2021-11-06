@@ -35,7 +35,7 @@ public class PlayerMoviment : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+       
         Movement();
 
     }

@@ -107,6 +107,7 @@ public class PlayerController : MonoBehaviour
                 {
                   Debug.Log(hit.transform.name);
                   TargetController target = hit.transform.GetComponent<TargetController>();
+                Debug.Log(target);
                   if(target != null)
                     {
                         target.TakeDamage(damage);

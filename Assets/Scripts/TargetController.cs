@@ -27,7 +27,7 @@ public class TargetController : MonoBehaviour
     }
     public void TakeDamage(float damage)
     {
-        health -= damage;
+        health -= damage + 60f;
         healthPercentage = health / maxHealth;
         healthSlider.value = healthPercentage;
         if (health <= 0f)
@@ -38,6 +38,8 @@ public class TargetController : MonoBehaviour
 
     void Die()
     {
+        Waves.enemies--;
+        Debug.Log(Waves.enemies);
         Destroy(gameObject);
     }
 }
