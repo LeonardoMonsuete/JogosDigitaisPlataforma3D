@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -50,6 +51,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        health = 100;
         _characterController = GetComponent<CharacterController>();
     }
 
@@ -64,29 +66,37 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (health > 0)
+        {
+            Movement();
+
+            //Somente pode atirar se nao tiver recarregando e n�o atirou nos ultimos "shootTime" e não está correndo segundos
+            if (Input.GetButtonDown("Fire1") && IsReloading == false && IsShooting == false && IsRunning == false)
+            {
+                StartCoroutine(Shoot());
+            }
+
+            //A��o Correr
+            Run();
+
+            //Somente pode recarregar se n�o tiver recarregando e n�o estiver atirando e não está correndo
+            if (Input.GetKey(KeyCode.R) && IsShooting == false && IsReloading == false && IsRunning == false)
+            {
+                StartCoroutine(Reload());
+            }
+
+            //Abre e fecha o mapa
+            if (Input.GetKey(KeyCode.M) && mapDelay == false)
+            {
+                StartCoroutine(ToggleMap());
+            }
+        } else
+        {
+            Waves.enemies = 0;
+            SceneManager.LoadScene("Game");
+        }
         //Rotinas de acao do Jogador
-        Movement();
 
-        //Somente pode atirar se nao tiver recarregando e n�o atirou nos ultimos "shootTime" e não está correndo segundos
-        if (Input.GetButtonDown("Fire1") && IsReloading == false && IsShooting == false && IsRunning == false)
-        {
-            StartCoroutine(Shoot());
-        }
-
-        //A��o Correr
-        Run();
-
-        //Somente pode recarregar se n�o tiver recarregando e n�o estiver atirando e não está correndo
-        if (Input.GetKey(KeyCode.R) && IsShooting == false && IsReloading == false && IsRunning == false)
-        {
-            StartCoroutine(Reload());
-        }
-
-        //Abre e fecha o mapa
-        if (Input.GetKey(KeyCode.M) && mapDelay == false)
-        {
-            StartCoroutine(ToggleMap());
-        }
     }
 
     IEnumerator Shoot()
@@ -190,6 +200,8 @@ public class PlayerController : MonoBehaviour
             health = health - 20;
             healthTxt.text = health.ToString();
         }
+
+
     }
 
 

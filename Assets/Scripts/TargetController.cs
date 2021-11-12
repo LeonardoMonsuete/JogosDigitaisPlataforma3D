@@ -21,16 +21,20 @@ public class TargetController : MonoBehaviour
 
     void Update()
     {
-        Vector3 directionPlayer = player.transform.position - healthSlider.transform.position;
-        Quaternion rotationSlider = Quaternion.LookRotation(directionPlayer);
-        healthSlider.transform.rotation = rotationSlider;
+        if(player != null && healthSlider != null)
+        {
+            Vector3 directionPlayer = player.transform.position - healthSlider.transform.position;
+            Quaternion rotationSlider = Quaternion.LookRotation(directionPlayer);
+            healthSlider.transform.rotation = rotationSlider;
+        }
+
     }
     public void TakeDamage(float damage)
     {
         health -= damage + 60f;
         healthPercentage = health / maxHealth;
         healthSlider.value = healthPercentage;
-        if (health <= 0f)
+        if (health < 0f)
         {
             Die();
         }

@@ -11,12 +11,14 @@ public class Waves : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        spawnEnemies();
+         enemies = 0;
+         spawnEnemies();
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("Inimigos presentes: " + Waves.enemies);
         spawnEnemies();
     }
 
