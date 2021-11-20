@@ -5,12 +5,17 @@ using UnityEngine.SceneManagement;
 
 public class Goal : MonoBehaviour
 {
+
+    int _currScene;
+        
+
     private void OnTriggerEnter(Collider gameObject)
     {
+        _currScene =  SceneManager.GetActiveScene().buildIndex;
         Debug.Log(gameObject.name);
         if(gameObject.name == "Player")
         {
-            SceneManager.LoadScene("Game2");
+            SceneManager.LoadScene(++_currScene);
         }
     }
 }
