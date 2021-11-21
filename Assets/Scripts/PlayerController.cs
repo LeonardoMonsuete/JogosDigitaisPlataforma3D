@@ -9,7 +9,10 @@ public class PlayerController : MonoBehaviour
 {
     private CharacterController _characterController = null;
     private Animator _animator = null;
-    public Camera fpsCam; 
+    public Camera fpsCam;
+
+    //index cena
+    int _currScene;
 
     //arma
     public float damage = 10f;
@@ -57,7 +60,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-
+        _currScene = SceneManager.GetActiveScene().buildIndex;
         _animator = GetComponent<Animator>();
 
         // GUI Municao
@@ -93,7 +96,7 @@ public class PlayerController : MonoBehaviour
         } else
         {
             Waves.enemies = 0;
-            SceneManager.LoadScene("Game");
+            SceneManager.LoadScene(++_currScene);
         }
         //Rotinas de acao do Jogador
 
