@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour
         } else
         {
             Waves.enemies = 0;
-            SceneManager.LoadScene(++_currScene);
+            SceneManager.LoadScene(_currScene);
         }
         //Rotinas de acao do Jogador
 
@@ -198,9 +198,9 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.name);
-        if (other.tag == "Enemy")
+        if (other.tag == "bullet")
         {
-            health = health - 20;
+            health = health - 8;
             healthTxt.text = health.ToString();
         }
 

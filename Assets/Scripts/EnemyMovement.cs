@@ -15,9 +15,21 @@ public class EnemyMovement : MonoBehaviour
     public bool isChasing = false;
     public Vector3 offset = new Vector3(-2f, -2f, 0f);
 
+    //Projectible
+    public GameObject projectible;
+    public Transform projectiblePoint;
+
     //Patrol
     public Transform[] waypoints;
     private int destPoint = 0;
+
+    public ParticleSystem tiro;
+    public AudioSource somTiro;
+
+
+    private int waitShoot = 1001;
+
+
 
     void Start()
     {
@@ -31,11 +43,33 @@ public class EnemyMovement : MonoBehaviour
     void Update()
     {
         _animator.SetFloat(speedParam, navMeshAgent.speed);
-        if (isChasing)
+
+        float distance = Vector3.Distance(navMeshAgent.transform.position, target.position);
+        Debug.Log(distance);
+
+        if (distance > 10 && distance < 20 )
         {
+            isChasing = true;
             navMeshAgent.SetDestination(target.position - offset);
+        } else if(distance <= 10)
+        {
+            if(waitShoot > 50)
+            {
+                _animator.transform.LookAt(target);
+                Rigidbody rb = Instantiate(projectible, projectiblePoint.position, Quaternion.identity).GetComponent<Rigidbody>();
+                rb.AddForce(transform.forward * 60f, ForceMode.Impulse);
+                rb.AddForce(transform.up * 7, ForceMode.Impulse);
+                tiro.Play();
+                somTiro.Play();
+                waitShoot = 0;
+            } else
+            {
+                waitShoot++;
+            }
+
         } else if(!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f) 
         {
+            isChasing = false;
             //se nao estiver perseguindo e estiver proximo do waypoint move para o proximo
             GotoNextPoint();
         }
