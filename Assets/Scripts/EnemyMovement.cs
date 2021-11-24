@@ -27,7 +27,7 @@ public class EnemyMovement : MonoBehaviour
     public AudioSource somTiro;
 
 
-    private int waitShoot = 1001;
+    private float shotDelay = 0;
 
 
 
@@ -42,18 +42,32 @@ public class EnemyMovement : MonoBehaviour
 
     void Update()
     {
-        _animator.SetFloat(speedParam, navMeshAgent.speed);
+        //controle animação
+        if(navMeshAgent.isStopped == false)
+        {
+            _animator.SetFloat(speedParam, navMeshAgent.speed);
+        } else
+        {
+            _animator.SetFloat(speedParam, 0);
+        }
+        
 
         float distance = Vector3.Distance(navMeshAgent.transform.position, target.position);
-        Debug.Log(distance);
+        shotDelay += Time.deltaTime;
 
+        //ve a distancia entre o alvo e ele
         if (distance > 10 && distance < 20 )
         {
+            navMeshAgent.isStopped = false;
             isChasing = true;
             navMeshAgent.SetDestination(target.position - offset);
-        } else if(distance <= 10)
+        } else if(distance <= 6)
         {
-            if(waitShoot > 50)
+            //quando esta perto o suficiente começa a atirar
+            isChasing = false;
+            navMeshAgent.isStopped = true;
+            Debug.Log(shotDelay);
+            if (shotDelay > 2)//atira a cada 2 segundos
             {
                 _animator.transform.LookAt(target);
                 Rigidbody rb = Instantiate(projectible, projectiblePoint.position, Quaternion.identity).GetComponent<Rigidbody>();
@@ -61,10 +75,7 @@ public class EnemyMovement : MonoBehaviour
                 rb.AddForce(transform.up * 7, ForceMode.Impulse);
                 tiro.Play();
                 somTiro.Play();
-                waitShoot = 0;
-            } else
-            {
-                waitShoot++;
+                shotDelay = 0;
             }
 
         } else if(!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f) 

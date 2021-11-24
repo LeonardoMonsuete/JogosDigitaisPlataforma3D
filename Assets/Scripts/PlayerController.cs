@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     int _currScene;
 
     //arma
-    public float damage = 10f;
+    public float damage = 20f;
     public float weaponRange = 100.0f;
     public TMPro.TextMeshProUGUI munition;
     private int _munition = 10;
@@ -118,7 +118,7 @@ public class PlayerController : MonoBehaviour
                 RaycastHit hit;
                 if(Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, weaponRange))
                 {
-                  Debug.Log(hit.transform.name);
+                  //Debug.Log(hit.transform.name);
                   TargetController target = hit.transform.GetComponent<TargetController>();
                 Debug.Log(target);
                   if(target != null)

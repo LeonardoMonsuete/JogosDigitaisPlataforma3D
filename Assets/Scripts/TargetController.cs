@@ -31,7 +31,7 @@ public class TargetController : MonoBehaviour
     }
     public void TakeDamage(float damage)
     {
-        health -= damage + 60f;
+        health -= damage;
         healthPercentage = health / maxHealth;
         healthSlider.value = healthPercentage;
         if (health < 0f)
