@@ -26,6 +26,7 @@ TagManager:
   - petrol
   - Enemy
   - bullet
+  - txt01
   layers:
   - Default
   - TransparentFX

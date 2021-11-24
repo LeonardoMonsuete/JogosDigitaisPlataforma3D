@@ -9,7 +9,9 @@ public class PlayerController : MonoBehaviour
 {
     private CharacterController _characterController = null;
     private Animator _animator = null;
+    private GameObject _txt01 = null;
     public Camera fpsCam;
+
 
     //index cena
     int _currScene;
@@ -62,7 +64,7 @@ public class PlayerController : MonoBehaviour
     {
         _currScene = SceneManager.GetActiveScene().buildIndex;
         _animator = GetComponent<Animator>();
-
+    
         // GUI Municao
         munition.text = _munition.ToString();
     }
@@ -120,7 +122,7 @@ public class PlayerController : MonoBehaviour
                 {
                   //Debug.Log(hit.transform.name);
                   TargetController target = hit.transform.GetComponent<TargetController>();
-                Debug.Log(target);
+                //Debug.Log(target);
                   if(target != null)
                     {
                         target.TakeDamage(damage);
@@ -197,11 +199,18 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.name);
+        //Debug.Log(other.name);
         if (other.tag == "bullet")
         {
             health = health - 8;
             healthTxt.text = health.ToString();
+        }
+
+        if (other.name == "Disabletxt01") 
+        {
+            //desabilitar txt01
+            
+
         }
 
 
