@@ -8,7 +8,8 @@ public class EnemyMovement : MonoBehaviour
 
     //Animation
     private Animator _animator = null;
-    private int speedParam = Animator.StringToHash("Speed");
+    private int runningParam = Animator.StringToHash("isRunning");
+    private int shootingParam = Animator.StringToHash("isShooting");
 
     //Targeting
     public Transform target;
@@ -45,10 +46,10 @@ public class EnemyMovement : MonoBehaviour
         //controle animação
         if(navMeshAgent.isStopped == false)
         {
-            _animator.SetFloat(speedParam, navMeshAgent.speed);
+            _animator.SetBool(runningParam, true);
         } else
         {
-            _animator.SetFloat(speedParam, 0);
+            _animator.SetBool(runningParam, false);
         }
         
 
@@ -56,7 +57,7 @@ public class EnemyMovement : MonoBehaviour
         shotDelay += Time.deltaTime;
 
         //ve a distancia entre o alvo e ele
-        if (distance > 10 && distance < 20 )
+        if (distance > 6 && distance < 20 )
         {
             navMeshAgent.isStopped = false;
             isChasing = true;
@@ -66,16 +67,17 @@ public class EnemyMovement : MonoBehaviour
             //quando esta perto o suficiente começa a atirar
             isChasing = false;
             navMeshAgent.isStopped = true;
-            Debug.Log(shotDelay);
             if (shotDelay > 2)//atira a cada 2 segundos
             {
                 _animator.transform.LookAt(target);
+                _animator.SetBool(shootingParam, true);
                 Rigidbody rb = Instantiate(projectible, projectiblePoint.position, Quaternion.identity).GetComponent<Rigidbody>();
                 rb.AddForce(transform.forward * 60f, ForceMode.Impulse);
-                rb.AddForce(transform.up * 7, ForceMode.Impulse);
+                rb.AddForce(transform.up, ForceMode.Impulse);
                 tiro.Play();
                 somTiro.Play();
                 shotDelay = 0;
+                _animator.SetBool(shootingParam, false);
             }
 
         } else if(!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f) 

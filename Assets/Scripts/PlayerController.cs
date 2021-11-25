@@ -71,6 +71,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        
         if (health > 0)
         {
             Movement();
@@ -97,7 +98,6 @@ public class PlayerController : MonoBehaviour
             }
         } else
         {
-            Waves.enemies = 0;
             SceneManager.LoadScene(_currScene);
         }
         //Rotinas de acao do Jogador
@@ -204,15 +204,8 @@ public class PlayerController : MonoBehaviour
         {
             health = health - 8;
             healthTxt.text = health.ToString();
+            Destroy(other.gameObject);
         }
-
-        if (other.name == "Disabletxt01") 
-        {
-            //desabilitar txt01
-            
-
-        }
-
 
     }
 

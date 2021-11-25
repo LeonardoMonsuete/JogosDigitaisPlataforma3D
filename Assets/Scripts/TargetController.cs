@@ -42,8 +42,6 @@ public class TargetController : MonoBehaviour
 
     void Die()
     {
-        Waves.enemies--;
-        Debug.Log(Waves.enemies);
         Destroy(gameObject);
     }
 }
